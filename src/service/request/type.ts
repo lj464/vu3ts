@@ -7,6 +7,6 @@ interface LJAxiosRequestConfig extends AxiosRequestConfig {
     respoceSuccess?: (res: AxiosResponse) => AxiosResponse
     respoceError?: (err: any) => any
   }
-  ShowLoadling?: boolean
+  ShowLoadling?: boolean,
 }
 export { LJAxiosRequestConfig }

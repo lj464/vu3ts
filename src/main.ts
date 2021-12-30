@@ -6,7 +6,7 @@ import router from './router/index'
 import srore from './store/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import './service/index'
+
 
 const app = createApp(App)
 

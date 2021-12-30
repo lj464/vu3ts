@@ -2,6 +2,7 @@ import axios from 'axios'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { LJAxiosRequestConfig } from './type'
 import { ElLoading } from 'element-plus'
+import localCache from '@/utils/cache'
 const DEFAULT_SHOW = true
 class LJrequst {
   instance: AxiosInstance
@@ -27,6 +28,11 @@ class LJrequst {
             background: 'rgba(0,0,0,0.5)'
           })
         }
+        const token = localCache.getCache('token')
+        if (!!token) {
+          config.headers = config.headers ?? {}
+          config.headers.Authorization = `Bearer ${token}`
+        }
         return config
       },
       (err) => err
@@ -36,12 +42,15 @@ class LJrequst {
         setTimeout(() => {
           this.LJloading?.close()
         }, 5000)
+        if(res.status === 200){
+          return res.data
+        }
         return res
       },
       (err) => err
     )
   }
-  request(config: LJAxiosRequestConfig): Promise<AxiosResponse> {
+  request<T = any>(config: LJAxiosRequestConfig): Promise<AxiosResponse<T>> {
     return this.instance(config)
   }
 }

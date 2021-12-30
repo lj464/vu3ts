@@ -39,13 +39,13 @@ export default {
   setup() {
     let currentTab = ref('account');
     let isKeepPassword = ref(true);
-    let accountRef = ref<InstanceType<typeof LoginAccount>>()
-    let phoneRef = ref<InstanceType<typeof LoginAccount>>()
+    let accountRef = ref()
+    let phoneRef = ref<InstanceType<typeof LoginPhone>>()
     let handleLoginClick = ()=>{
       if(currentTab.value =='account'){
-        accountRef.value?.submit()
+        accountRef.value?.submit(isKeepPassword.value)
       }else {
-        console.log('5555555')
+        console.log('手机登录')
       }
     }
     return {

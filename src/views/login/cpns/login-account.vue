@@ -11,24 +11,41 @@
   </div>
 </template>
 
-<script>
-import { reactive } from 'vue';
-import { rules } from '../config/account-config'
+<script lang="ts">
+import { reactive, ref } from "vue";
+import { rules } from "../config/account-config";
+import localCache from "@/utils/cache";
+import { useStore } from "vuex";
 export default {
-    setup() {
-        let account = reactive({
-            name:'',
-            password:""
-        })
-        let submit = ()=>{
-            console.log('1111111');
+  setup() {
+    let account = reactive({
+      name: "",
+      password: "",
+    });
+    const formRef = ref();
+    const store = useStore();
+    let submit = (isKeepPassword: boolean) => {
+      formRef.value.validate((isok: boolean) => {
+        if (isok) {
+          if (isKeepPassword) {
+            // 本地缓存
+            localCache.setCache("name", account.name);
+            localCache.setCache("password", account.password);
+          } else {
+            localCache.deleteCache("name");
+            localCache.deleteCache("password");
+          }
+          store.dispatch("accountLoginAction", { ...account });
         }
-        return {
-            account,
-            rules,
-            submit
-        }
-    }
+      });
+    };
+    return {
+      account,
+      rules,
+      submit,
+      formRef,
+    };
+  },
 };
 </script>
 

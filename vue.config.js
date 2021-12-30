@@ -7,5 +7,16 @@ module.exports = {
   devServer: {
     port: 8888
   }, //webpack配置
-  lintOnSave: false //配置关闭eslint
+  lintOnSave: false, //配置关闭eslint
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://152.136.185.210:5000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    }
+  },
 }
