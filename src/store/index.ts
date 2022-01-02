@@ -10,7 +10,7 @@ const store = createStore<stateType>({
     return {
       token:"",
       userInfo:'',
-      userMenus:''
+      userMenus:localCache.getCache('userMenus')
     }
   },
   mutations: {
