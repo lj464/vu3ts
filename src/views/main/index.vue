@@ -8,31 +8,34 @@
         <el-header class="page-header">
           <nav-header @foldChange="handleFoldChange" />
         </el-header>
-        <el-main class="page-content">Main</el-main>
+        <div class="page-info">
+          <router-view />
+        </div>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent , ref} from "vue";
+import { defineComponent, ref } from "vue";
 import NavMenu from "@/components/nav-menu/indx.vue";
+
 import NavHeader from "@/components/nav-header/index.vue";
 export default defineComponent({
   components: {
     NavMenu,
     NavHeader,
   },
-  setup(){
-    let isCollapse = ref(false)
-    const handleFoldChange = ()=>{
-      isCollapse.value = !isCollapse.value
-    }
+  setup() {
+    let isCollapse = ref(false);
+    const handleFoldChange = () => {
+      isCollapse.value = !isCollapse.value;
+    };
     return {
       handleFoldChange,
-      isCollapse
-    }
-  }
+      isCollapse,
+    };
+  },
 });
 </script>
 
@@ -85,5 +88,9 @@ export default defineComponent({
   color: #333;
   text-align: center;
   background-color: #f0f2f5;
+}
+.page-info {
+  background-color: #fff;
+  border-radius: 5px;
 }
 </style>

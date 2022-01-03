@@ -29,7 +29,7 @@
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item   @click="handleMenuItemClick(subitem)" :index="subitem.id + ''">
                 <LJi v-if="subitem.icon" :name="subitem.icon" />
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -45,7 +45,7 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import userMenuObj from "@/store/types";
-
+import { useRouter } from 'vue-router'
 export default defineComponent({
   props: {
     collapse: {
@@ -62,9 +62,15 @@ export default defineComponent({
       });
     };
     setIcon(userMenus.value);
-    console.log(userMenus, "userMenus5555555");
+    const router = useRouter()
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
     return {
       userMenus,
+      handleMenuItemClick
     };
   },
 });

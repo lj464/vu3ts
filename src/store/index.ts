@@ -5,6 +5,7 @@ import {loginApi , requestUserInfoById ,requestUserMenusByRoleId } from '@/api/l
 import { IAccount } from '../api/types'
 import router from '@/router'
 import localCache from '@/utils/cache'
+import {setRouter} from '@/utils/map-menus'
 const store = createStore<stateType>({
   state() {
     return {
@@ -39,10 +40,33 @@ const store = createStore<stateType>({
         commit('changeUserMenus', userMenus)
         localCache.setCache('userMenus', userMenus)
         router.push('/main')
+    },
+    loadLocalLogin({ commit }) {
+      const token = localCache.getCache('token')
+      if (token) {
+        commit('steToken', token)
+      }
+      const userInfo = localCache.getCache('userInfo')
+      if (userInfo) {
+        commit('changeUserInfo', userInfo)
+      }
+      const userMenus = localCache.getCache('userMenus')
+      if (userMenus) {
+        commit('changeUserMenus', userMenus)
+       const routes =   setRouter(userMenus)
+       routes.forEach((route)=>{
+         router.addRoute('main',route)
+       })
+      }
     }  
   },
   modules: {
     login
   }
 })
+
+export function setDefault (){
+  store.dispatch('loadLocalLogin')
+}
+
 export default store

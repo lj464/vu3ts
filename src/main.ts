@@ -7,13 +7,14 @@ import srore from './store/index'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import LJi from '@/components/i/index.vue'
-
+import {setDefault} from '@/store/index'
 // ElIconModules as string{}
 const app = createApp(App)
 // console.log(Object.keys(ElIconModules))
 // Object.keys(ElIconModules).forEach((v )=>{
 //     app.component(v,ElIconModules[v  ])
 // })
+setDefault()
 app.component('LJi',LJi)
 app.use(ElementPlus)
 app.use(router)
