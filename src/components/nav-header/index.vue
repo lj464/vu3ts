@@ -1,11 +1,24 @@
 <template>
   <div class="nav-header">
-    <LJi @click="handleFoldClick"  :name='isFold ? "ArrowRightBold":"ArrowLeft"' />
+    <LJi
+      @click="handleFoldClick"
+      class="icon"
+      :name="isFold ? 'ArrowRightBold' : 'ArrowLeft'"
+    />
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item v-for="(item, index) in arrPath" :key="index">{{
+        item
+      }}</el-breadcrumb-item>
+    </el-breadcrumb>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
+import { getMenuId } from "@/utils/map-menus";
+import { useRoute } from "vue-router";
+import userMenuObj from "@/store/types";
+import { useStore } from "vuex";
 export default defineComponent({
   emits: ["foldChange"],
   setup(props, { emit }) {
@@ -15,9 +28,18 @@ export default defineComponent({
       emit("foldChange", isFold.value);
     };
 
+    let arrPath = computed(() => {
+      const store = useStore();
+      const route = useRoute();
+      const userMenus = computed<userMenuObj[]>(() => store.state.userMenus);
+      let { target, parent } = getMenuId(userMenus.value, route.path);
+      return [parent.name,target.name]
+    });
+    console.log(parent, "8888888888");
     return {
       isFold,
       handleFoldClick,
+      arrPath,
     };
   },
 });
@@ -25,9 +47,9 @@ export default defineComponent({
 
 <style scoped lang="less">
 .nav-header {
-  .fold-menu {
-    font-size: 30px;
-    cursor: pointer;
+  display: flex;
+  .icon {
+    margin-right: 10px;
   }
 }
 </style>

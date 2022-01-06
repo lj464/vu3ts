@@ -1,6 +1,5 @@
 
 import { RouteRecordRaw } from 'vue-router'
-
 export function setRouter(youROutes:any[]):RouteRecordRaw[]{
     const routers:RouteRecordRaw[] = []
     const ALLroutes:RouteRecordRaw[] = []
@@ -23,4 +22,22 @@ export function setRouter(youROutes:any[]):RouteRecordRaw[]{
 
     findmenu(youROutes)
     return routers
+}
+
+
+export function getMenuId(userMenu:any[],userPath:string) {
+    for (const menu of userMenu ){
+        if(menu.type === 2 && menu.url == userPath){
+            return menu
+        }else if(menu.type === 1) {
+            let target = getMenuId(menu.children,userPath)
+            console.log(target,'targetttttttttttt')
+            if(target) {
+                return {
+                    target,
+                    parent:menu
+                }
+            }
+        }
+    }
 }

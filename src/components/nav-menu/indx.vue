@@ -5,7 +5,7 @@
       <span v-if="!collapse" class="title">Vue3+TS</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active='id'
       class="el-menu-vertical"
       :collapse="collapse"
       background-color="#0c2135"
@@ -29,7 +29,10 @@
               <span>{{ item.name }}</span>
             </template>
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item   @click="handleMenuItemClick(subitem)" :index="subitem.id + ''">
+              <el-menu-item
+                @click="handleMenuItemClick(subitem)"
+                :index="subitem.id + ''"
+              >
                 <LJi v-if="subitem.icon" :name="subitem.icon" />
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -45,7 +48,8 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import userMenuObj from "@/store/types";
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from "vue-router";
+import { getMenuId } from "@/utils/map-menus";
 export default defineComponent({
   props: {
     collapse: {
@@ -58,19 +62,23 @@ export default defineComponent({
     const userMenus = computed<userMenuObj[]>(() => store.state.userMenus);
     const setIcon = (arr: userMenuObj[]) => {
       arr.forEach((v) => {
-        if(v.icon)v.icon = v.icon.replace("el-icon-", "");
+        if (v.icon) v.icon = v.icon.replace("el-icon-", "");
       });
     };
     setIcon(userMenus.value);
-    const router = useRouter()
+    const router = useRouter();
     const handleMenuItemClick = (item: any) => {
       router.push({
-        path: item.url ?? '/not-found'
-      })
-    }
+        path: item.url ?? "/not-found",
+      });
+    };
+    const route = useRoute()
+    let {target} = getMenuId(userMenus.value,route.path);
+    let id = target.id+'' ?? '2'
     return {
       userMenus,
-      handleMenuItemClick
+      handleMenuItemClick,
+      id
     };
   },
 });
