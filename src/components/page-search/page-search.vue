@@ -6,7 +6,7 @@
       </template>
       <template #footer>
         <div class="handle-btns">
-          <el-button icon="el-icon-refresh">重置</el-button>
+          <el-button icon="el-icon-refresh" @click="resetData">重置</el-button>
           <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </div>
       </template>
@@ -15,33 +15,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import HyForm from '@/base-ui/form'
+import { defineComponent, reactive } from "vue";
+import HyForm from "@/base-ui/form/form.vue";
 
 export default defineComponent({
+  name: "zli",
   props: {
     searchFormConfig: {
       type: Object,
-      reuqired: true
-    }
+      reuqired: true,
+    },
   },
   components: {
-    HyForm
+    HyForm,
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
+  setup(props) {
+    let formData = reactive({});
+    props.searchFormConfig.formItems.forEach((item) => {
+      formData[item.field] = "";
+    });
 
+    const resetData = () => {
+      formData = props.searchFormConfig.formItems.forEach((item) => {
+        formData[item.field] = "";
+      });
+    };
     return {
-      formData
-    }
-  }
-})
+      formData,
+      resetData,
+    };
+  },
+});
 </script>
 
 <style scoped>

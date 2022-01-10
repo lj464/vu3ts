@@ -39,7 +39,7 @@ export default {
   setup() {
     let currentTab = ref('account');
     let isKeepPassword = ref(true);
-    let accountRef = ref()
+    let accountRef = ref(null)
     let phoneRef = ref<InstanceType<typeof LoginPhone>>()
     let handleLoginClick = ()=>{
       if(currentTab.value =='account'){

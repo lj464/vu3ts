@@ -27,7 +27,8 @@
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
-                    >{{ option.title }}</el-option
+                     :label="option.title"
+                    ></el-option
                   >
                 </el-select>
               </template>
@@ -43,9 +44,9 @@
         </template>
       </el-row>
     </el-form>
-    <!-- <div class="footer">
+    <div class="footer">
       <slot name="footer"></slot>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -54,6 +55,7 @@ import { defineComponent, PropType, ref, watch } from "vue";
 import { IFormItem } from "./types";
 
 export default defineComponent({
+  name:'searchBase',
   props: {
     modelValue: {
       type: Object,
@@ -82,24 +84,18 @@ export default defineComponent({
       }),
     },
   },
-  emits: ["update:modelValue"],
-  setup(props, { emit }) {
-    const formData = ref({ ...props.modelValue });
-    watch(
-      formData,
-      (newValue) => {
-        console.log(newValue);
-        emit("update:modelValue", newValue);
-      },
-      {
-        deep: true,
-      }
-    );
-
+  emits:['update:modelValue'],
+  setup(props,{emit}){
+    let formData = ref({...props.modelValue})
+    watch(formData,(newVal)=>{
+      emit('update:modelValue',newVal)
+    },{
+      deep:true
+    })
     return {
-      formData,
-    };
-  },
+      formData
+    }
+  }
 });
 </script>
 

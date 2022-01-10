@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
-import login from './module/login'
+import system from './module/system/system'
 import {stateType} from './types'
-import {loginApi , requestUserInfoById ,requestUserMenusByRoleId } from '@/api/login'
-import { IAccount } from '../api/types'
+import {loginApi , requestUserInfoById ,requestUserMenusByRoleId } from '@/api/login/login'
+import { IAccount } from '../api/login/types'
 import router from '@/router'
 import localCache from '@/utils/cache'
 import {setRouter} from '@/utils/map-menus'
@@ -61,7 +61,7 @@ const store = createStore<stateType>({
     }  
   },
   modules: {
-    login
+    system
   }
 })
 

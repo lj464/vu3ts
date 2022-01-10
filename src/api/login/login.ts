@@ -1,9 +1,5 @@
-import LJrequst from '@/service/request/index'
-
-import config from '@/service/config'
+import lJaxios from '@/service/request/index'
 import { IAccount,ILoginResult } from './types'
-
-let lJaxios = new LJrequst(config)
 
 export function loginApi (data:IAccount){
   return lJaxios.request<ILoginResult>({

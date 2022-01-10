@@ -20,6 +20,7 @@ import { useRoute } from "vue-router";
 import userMenuObj from "@/store/types";
 import { useStore } from "vuex";
 export default defineComponent({
+  // 折叠事件
   emits: ["foldChange"],
   setup(props, { emit }) {
     const isFold = ref(false);
@@ -27,7 +28,7 @@ export default defineComponent({
       isFold.value = !isFold.value;
       emit("foldChange", isFold.value);
     };
-
+    // 面包屑
     let arrPath = computed(() => {
       const store = useStore();
       const route = useRoute();

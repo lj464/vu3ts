@@ -3,6 +3,7 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 import { LJAxiosRequestConfig } from './type'
 import { ElLoading } from 'element-plus'
 import localCache from '@/utils/cache'
+import config from '@/service/config'
 const DEFAULT_SHOW = true
 class LJrequst {
   instance: AxiosInstance
@@ -39,19 +40,33 @@ class LJrequst {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        setTimeout(() => {
           this.LJloading?.close()
-        }, 5000)
         if(res.status === 200){
           return res.data
         }
         return res
       },
-      (err) => err
+      (err) => {
+        this.LJloading?.close()
+        return err
+      }
     )
   }
   request<T = any>(config: LJAxiosRequestConfig): Promise<AxiosResponse<T>> {
     return this.instance(config)
   }
+  get<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
+    return this.request({...config,method:'get'})
+  }
+  post<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
+    return this.request({...config,method:'post'})
+  }
+  put<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
+    return this.request({...config,method:'put'})
+  }
+  delete<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
+    return this.request({...config,method:'delete'})
+  }
 }
-export default LJrequst
+export default new LJrequst(config)
+

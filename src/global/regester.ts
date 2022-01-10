@@ -1,11 +1,8 @@
-// import { App } from 'vue'
+import {formatTime} from './regesterFormatTime'
+import {regesterLJi} from './regesterLJi'
 
-// import { ElButton } from 'element-plus'
-
-// let COMList: any[] = [ElButton]
-
-// export function regestorCom(app: App): void {
-//   COMList.forEach((v) => {
-//     app.component(v.name, v)
-//   })
-// }
+export function regester(app){
+    app.use(formatTime)
+    app.use(regesterLJi)
+} 
+export default {}

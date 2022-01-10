@@ -1,11 +1,11 @@
 <template>
   <div class="hy-table">
     <el-table :data="listData" border style="width: 100%">
-      <template v-for="propItem in propList" :key="propItem.prop">
+      <template v-for="(propItem,index) in propList" :key="index">
         <el-table-column v-bind="propItem" align="center">
-          <template #default="scope">
-            <slot :name="propItem.slotName" :row="scope.row">
-              {{ scope.row[propItem.prop] }}
+          <template #default='scope' >
+            <slot :name='propItem.slotName' :colum='scope.row[propItem.prop]' >
+              {{scope.row[propItem.prop]}}
             </slot>
           </template>
         </el-table-column>
@@ -18,6 +18,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  name:'baseTable',
   props: {
     listData: {
       type: Array,

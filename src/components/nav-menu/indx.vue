@@ -75,6 +75,7 @@ export default defineComponent({
     const route = useRoute()
     let {target} = getMenuId(userMenus.value,route.path);
     let id = target.id+'' ?? '2'
+        console.log(id,'idddddddddddd')
     return {
       userMenus,
       handleMenuItemClick,
