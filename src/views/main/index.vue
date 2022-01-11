@@ -9,7 +9,9 @@
           <nav-header @foldChange="handleFoldChange" />
         </el-header>
         <div class="page-info">
-          <router-view />
+          <el-config-provider :locale="locale">
+            <router-view />
+          </el-config-provider>
         </div>
       </el-container>
     </el-container>
@@ -19,12 +21,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import NavMenu from "@/components/nav-menu/indx.vue";
-
+import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import NavHeader from "@/components/nav-header/index.vue";
 export default defineComponent({
   components: {
     NavMenu,
     NavHeader,
+    ElConfigProvider,
   },
   setup() {
     let isCollapse = ref(false);
@@ -34,6 +38,7 @@ export default defineComponent({
     return {
       handleFoldChange,
       isCollapse,
+      locale: zhCn,
     };
   },
 });
@@ -50,6 +55,7 @@ export default defineComponent({
 
 .main-content,
 .page {
+  overflow: auto;
   height: 100%;
 }
 

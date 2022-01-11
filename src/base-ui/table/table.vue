@@ -1,38 +1,104 @@
 <template>
   <div class="hy-table">
-    <el-table :data="listData" border style="width: 100%">
-      <template v-for="(propItem,index) in propList" :key="index">
-        <el-table-column v-bind="propItem" align="center">
-          <template #default='scope' >
-            <slot :name='propItem.slotName' :colum='scope.row[propItem.prop]' >
-              {{scope.row[propItem.prop]}}
+    <slot name="headerHandler"></slot>
+    <el-table :data="listData" v-bind="childrenProps" border style="width: 100%">
+      <el-table-column
+        v-if="showSelectColumn"
+        type="selection"
+        align="center"
+        width="60"
+      ></el-table-column>
+      <el-table-column
+        v-if="showIndexColumn"
+        type="index"
+        label="序号"
+        align="center"
+        width="80"
+      ></el-table-column>
+      <template v-for="(propItem, index) in propList" :key="index">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
+          <template #default="scope">
+            <slot :name="propItem.slotName" :colum="scope.row[propItem.prop]">
+              {{ scope.row[propItem.prop] }}
             </slot>
           </template>
         </el-table-column>
       </template>
     </el-table>
+    <div class="footer">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pagenation.currentPage"
+        :page-size="pagenation.pageSize"
+        :page-sizes="[10, 20, 30]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="listCount"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name:'baseTable',
+  name: "baseTable",
   props: {
+    childrenProps: {
+      type: Object,
+      default: () => ({}),
+    },
+    listCount: {
+      type: Number,
+      default: 10,
+    },
+    pagenation: {
+      type: Object,
+      default: () => {
+        return {
+          currentPage: 0,
+          pageSize: 10,
+        };
+      },
+    },
     listData: {
       type: Array,
-      required: true
+      required: true,
     },
     propList: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
+    showSelectColumn: {
+      type: Boolean,
+      default: false,
+    },
+    showIndexColumn: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup() {
-    return {}
-  }
-})
+  emits: ["update:pagenation"],
+  setup(props, { emit }) {
+    const handleSizeChange = (pageSize) => {
+      emit("update:pagenation", { ...props.pagenation, pageSize });
+    };
+    const handleCurrentChange = (currentPage) => {
+      emit("update:pagenation", { ...props.pagenation, currentPage });
+    };
+    return {
+      handleSizeChange,
+      handleCurrentChange,
+    };
+  },
+});
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.footer {
+  margin-top: 15px;
+  text-align: right;
+}
+</style>

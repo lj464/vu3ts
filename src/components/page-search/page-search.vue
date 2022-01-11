@@ -1,13 +1,13 @@
 <template>
   <div class="page-search">
     <hy-form v-bind="searchFormConfig" v-model="formData">
-      <template #header>
+      <!-- <template #header>
         <h1 class="header">高级检索</h1>
-      </template>
+      </template> -->
       <template #footer>
         <div class="handle-btns">
           <el-button icon="el-icon-refresh" @click="resetData">重置</el-button>
-          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">搜索</el-button>
         </div>
       </template>
     </hy-form>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import HyForm from "@/base-ui/form/form.vue";
 
 export default defineComponent({
@@ -29,20 +29,31 @@ export default defineComponent({
   components: {
     HyForm,
   },
-  setup(props) {
-    let formData = reactive({});
+  emits: ["handleSearch"],
+  setup(props, { emit }) {
+    const formItems = props.searchFormConfig?.formItems ?? [];
+    const formOriginData: any = {};
+    for (const item of formItems) {
+      formOriginData[item.field] = "";
+    }
+    let formData = ref(formOriginData);
     props.searchFormConfig.formItems.forEach((item) => {
-      formData[item.field] = "";
+      formData.value[item.field] = "";
     });
 
     const resetData = () => {
-      formData = props.searchFormConfig.formItems.forEach((item) => {
-        formData[item.field] = "";
+      props.searchFormConfig.formItems.forEach((item) => {
+        formData.value[item.field] = "";
       });
+      emit("handleSearch", formData.value);
+    };
+    const search = () => {
+      emit("handleSearch", formData.value);
     };
     return {
       formData,
       resetData,
+      search,
     };
   },
 });

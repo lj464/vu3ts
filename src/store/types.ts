@@ -2,7 +2,8 @@
 export interface stateType {
     token:string,
     userInfo:any,
-    userMenus:any
+    userMenus:any,
+    permissions:string[]
 }
 export default interface userMenuObj {
     name:string,

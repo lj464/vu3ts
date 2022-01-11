@@ -36,7 +36,6 @@ export default defineComponent({
       let { target, parent } = getMenuId(userMenus.value, route.path);
       return [parent.name,target.name]
     });
-    console.log(parent, "8888888888");
     return {
       isFold,
       handleFoldClick,
