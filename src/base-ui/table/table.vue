@@ -18,7 +18,7 @@
       <template v-for="(propItem, index) in propList" :key="index">
         <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <slot :name="propItem.slotName" :colum="scope.row[propItem.prop]">
+            <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
             </slot>
           </template>

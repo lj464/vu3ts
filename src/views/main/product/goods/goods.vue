@@ -5,16 +5,16 @@
       :tableConfig="contentTableConfig"
       :tableName="'goods'"
     >
-      <template #image="{ colum }">
+      <template #image="{ row }">
         <el-image
           style="width: 60px; height: 60px"
-          :src="colum"
-          :preview-src-list="[colum]"
+          :src="row.imgUrl"
+          :preview-src-list="[row]"
         >
         </el-image>
       </template>
-      <template #oldPrice="{ colum }">
-        <div>{{'$'+ colum}}</div>
+      <template #oldPrice="{ row }">
+        <div>{{'$'+ row.oldPrice}}</div>
       </template>
     </table-content>
   </div>

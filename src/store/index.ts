@@ -10,13 +10,16 @@ import { IAccount } from '../api/login/types'
 import router from '@/router'
 import localCache from '@/utils/cache'
 import { setRouter, mapMenusToPermissions } from '@/utils/map-menus'
+import { systemApi } from '@/api/system/system'
 const store = createStore<stateType>({
   state() {
     return {
       token: '',
       userInfo: '',
       userMenus: localCache.getCache('userMenus'),
-      permissions: []
+      permissions: [],
+      entireDepartment: [],
+      entireRole: []
     }
   },
   mutations: {
@@ -31,6 +34,12 @@ const store = createStore<stateType>({
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(userMenus)
       state.permissions = permissions
+    },
+    changeEntireDepartment(state, list) {
+      state.entireDepartment = list
+    },
+    changeEntireRole(state, list) {
+      state.entireRole = list
     }
   },
   getters: {},
@@ -66,6 +75,21 @@ const store = createStore<stateType>({
           router.addRoute('main', route)
         })
       }
+    },
+    // 获取角色部门列表
+    async getInitialDataAction({ commit }) {
+      let depres = await systemApi.getDepartment({
+        offset: 0,
+        size: 1000
+      })
+      const { list: departmentList } = depres.data
+      let roleres = await systemApi.getRoleList({
+        offset: 0,
+        size: 1000
+      })
+      const { list: roleList } = roleres.data
+      commit('changeEntireDepartment', departmentList)
+      commit('changeEntireRole', roleList)
     }
   },
   modules: {
@@ -75,6 +99,7 @@ const store = createStore<stateType>({
 
 export function setDefault() {
   store.dispatch('loadLocalLogin')
+  store.dispatch('getInitialDataAction')
 }
 
 export default store

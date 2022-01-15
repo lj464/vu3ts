@@ -5,7 +5,6 @@ export function usePremission(pageName, hanldeName) {
   const verifyPermission = `system:${pageName}:${hanldeName}`
   console.log(
     permission.find((item) => {
-        console.log(item,verifyPermission)
       if (item == verifyPermission) {
         return true
       }

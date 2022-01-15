@@ -61,8 +61,8 @@ class LJrequst {
   post<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
     return this.request({...config,method:'post'})
   }
-  put<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
-    return this.request({...config,method:'put'})
+  patch<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
+    return this.request({...config,method:'patch'})
   }
   delete<T>(config: LJAxiosRequestConfig):Promise<AxiosResponse<T>>{
     return this.request({...config,method:'delete'})

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table">
     <tablecontet
       :listData="targetTable"
       v-bind="tableConfig"
@@ -8,25 +8,29 @@
     >
       <template #headerHandler>
         <h2 style="padding-left: 30px">{{ tableConfig.title }}</h2>
-        <el-button v-show="tableConfig.isCreate && isCreate" type="primary" style="margin-left: 30px; float: left" size="medium"
-          >{{'新增'+tableConfig.title.replace('列表','')}}</el-button
+        <el-button
+          v-show="tableConfig.isCreate && isCreate"
+          type="primary"
+          style="margin-left: 30px; float: left"
+          @click="showCreate"
+          >{{ "新增" + tableConfig.title.replace("列表", "") }}</el-button
         >
       </template>
       <template #status="data">
-        {{ data.colum == 1 ? "在线" : "离线" }}
+        {{ data.row.status == 1 ? "在线" : "离线" }}
       </template>
       <template #createAt="data">
-        {{ $formatTime(data.colum) }}
+        {{ $formatTime(data.row.createAt) }}
       </template>
       <template #updateAt="data">
-        {{ $formatTime(data.colum) }}
+        {{ $formatTime(data.row.updateAt) }}
       </template>
-      <template #handler>
-        <el-button type="primary" :icon="Edit" v-if="isUpdate">编辑</el-button>
-        <el-button type="danger" :icon="Delete" v-if="isDelete">删除</el-button>
+      <template #handler="{row}">
+        <el-button type="primary" @click="editShow(row)"  :icon="Edit" v-if="isUpdate">编辑</el-button>
+        <el-button type="danger" :icon="Delete" @click="deletaTableData(row)" v-if="isDelete">删除</el-button>
       </template>
       <template #[item]="scoped" v-for="(item, index) in privateSloat" :key="index">
-        <slot :name="item" :colum="scoped.colum"> </slot>
+        <slot :name="item" :row="scoped.row"> </slot>
       </template>
     </tablecontet>
   </div>
@@ -55,7 +59,7 @@ export default {
     Edit,
     Delete,
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const targetName =
       props.tableName.slice(0, 1).toUpperCase() + props.tableName.slice(1);
@@ -98,6 +102,21 @@ export default {
         privateSloat.push(v.slotName);
       }
     });
+    // 新增函数
+    const showCreate = ()=>{
+      emit('newBtnClick')
+    }
+    const editShow = (row)=>{
+      emit('editBtnClick',row)
+    }
+    // 删除逻辑
+    const deletaTableData = (row)=>{
+      let data = {
+        id:row.id,
+        name:props.tableName
+      }
+      store.dispatch('system/deleteListAction',data)
+    }
     return {
       targetTable,
       getBaseData,
@@ -108,9 +127,16 @@ export default {
       isUpdate,
       isDelete,
       isQuery,
+      showCreate,
+      editShow,
+      deletaTableData
     };
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.table {
+  padding-bottom: 50px;
+}
+</style>
