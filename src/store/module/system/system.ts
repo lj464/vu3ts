@@ -3,7 +3,7 @@ import { ISystemState } from './types'
 import { stateType } from '../../types'
 import { systemApi } from '@/api/system/system'
 import {} from 'element-plus'
-const login: Module<ISystemState, stateType> = {
+const system: Module<ISystemState, stateType> = {
   namespaced: true,
   state: () => {
     return {
@@ -117,4 +117,4 @@ const login: Module<ISystemState, stateType> = {
     }
   }
 }
-export default login
+export default system

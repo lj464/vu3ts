@@ -55,7 +55,8 @@ export default defineComponent({
 
 .main-content,
 .page {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
 }
 

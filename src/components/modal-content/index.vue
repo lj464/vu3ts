@@ -8,6 +8,7 @@
       center
     >
       <LJform v-bind="modalConfig" v-model="modelData" />
+      <slot> </slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -37,6 +38,11 @@ export default {
       type: String,
       require: true,
     },
+    otherInfo: {
+      // 插槽中的自定义数据
+      type: Object,
+      default: () => ({}),
+    },
   },
   components: {
     LJform,
@@ -47,20 +53,21 @@ export default {
     const store = useStore();
     const handleOk = () => {
       if (Object.keys(props.defaultInfo).length) {
+        // 编辑
         let data = {
           pageName: props.pageName,
-          newData: modelData.value,
+          newData: {...modelData.value,...props.otherInfo},
           id: props.defaultInfo.id,
         };
         store.dispatch("system/editPageDataAction", data);
       } else {
         let data = {
           pageName: props.pageName,
-          newData: modelData.value,
+          newData: {...modelData.value,...props.otherInfo},
         };
         store.dispatch("system/createPageDataAction", data);
       }
-      centerDialogVisible.value = false
+      centerDialogVisible.value = false;
     };
     watch(
       () => props.defaultInfo,

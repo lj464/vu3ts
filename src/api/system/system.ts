@@ -52,5 +52,12 @@ export const systemApi = {
       url: '/department/list',
       data
     })
+  },
+  // 获取角色菜单
+  getMenulist(data){
+    return lJaxios.post<userListType>({
+      url:"/menu/list",
+      data
+    })
   }
 }

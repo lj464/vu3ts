@@ -11,6 +11,7 @@ import router from '@/router'
 import localCache from '@/utils/cache'
 import { setRouter, mapMenusToPermissions } from '@/utils/map-menus'
 import { systemApi } from '@/api/system/system'
+import dashboard from './module/analysis/dashboard'
 const store = createStore<stateType>({
   state() {
     return {
@@ -19,7 +20,8 @@ const store = createStore<stateType>({
       userMenus: localCache.getCache('userMenus'),
       permissions: [],
       entireDepartment: [],
-      entireRole: []
+      entireRole: [],
+      entireMenu: []
     }
   },
   mutations: {
@@ -40,6 +42,9 @@ const store = createStore<stateType>({
     },
     changeEntireRole(state, list) {
       state.entireRole = list
+    },
+    changeEntireMenu(state,list){
+      state.entireMenu = list
     }
   },
   getters: {},
@@ -90,10 +95,15 @@ const store = createStore<stateType>({
       const { list: roleList } = roleres.data
       commit('changeEntireDepartment', departmentList)
       commit('changeEntireRole', roleList)
+      // 保存角色菜单列表
+      let menuListRes =  await systemApi.getMenuList({})
+      const { list: menuList } = menuListRes.data
+      commit('changeEntireMenu', menuList)
     }
   },
   modules: {
-    system
+    system,
+    dashboard
   }
 })
 

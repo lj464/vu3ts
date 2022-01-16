@@ -13,7 +13,7 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
     />
-    <ModalContent :modalConfig="modalConfigRef" pageName='users' :defaultInfo="defaultinfo" ref="modelRef" />
+    <ModalContent  :modalConfig="modalConfigRef" pageName='users' :defaultInfo="defaultinfo" ref="modelRef" />
   </div>
 </template>
 
