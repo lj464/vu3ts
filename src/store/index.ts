@@ -51,10 +51,12 @@ const store = createStore<stateType>({
   actions: {
     accountLoginAction: async ({ commit }, payload: IAccount) => {
       let res = await loginApi(payload)
+      // 设置token
       commit('steToken', res.data.token)
       localCache.setCache('token', res.data.token)
       let userInfoResult = await requestUserInfoById(res.data.id)
       const userInfo = userInfoResult.data
+      // 保存该账号的用户信息用来做按钮权限等
       commit('changeUserInfo', userInfo)
       localCache.setCache('userInfo', userInfo)
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
@@ -62,7 +64,10 @@ const store = createStore<stateType>({
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
       router.push('/main')
+      // 设置用户权限，在main.js中也有调用，这样刷新动态路由也会出现
+      setDefault()
     },
+
     loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')
       if (token) {
@@ -76,6 +81,7 @@ const store = createStore<stateType>({
       if (userMenus) {
         commit('changeUserMenus', userMenus)
         const routes = setRouter(userMenus)
+        console.log(routes,'routessss')
         routes.forEach((route) => {
           router.addRoute('main', route)
         })
