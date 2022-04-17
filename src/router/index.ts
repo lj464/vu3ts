@@ -28,6 +28,7 @@ router.beforeEach((to)=>{
       return '/login'
     }
   }
+  // 如果是登录跳转则到第一个路由
   if(to.path ==='/main'){
     return firstMenu.url
   }

@@ -2,13 +2,13 @@ import { RouteRecordRaw } from 'vue-router'
 let firstMenu: any = null
 export function setRouter(youROutes: any[]): RouteRecordRaw[] {
   const routers: RouteRecordRaw[] = []
-  const ALLroutes: RouteRecordRaw[] = []
+  const ALLroutes: RouteRecordRaw[] = [] // 所有的异步路由
   const routeFiles = require.context('../router/main', true, /\.ts/)
   routeFiles.keys().forEach((key) => {
     let target = require('../router/main' + key.split('.')[1])
     ALLroutes.push(target.default)
   })
-
+  console.log(ALLroutes,'ALLroutes')
   const findmenu = (menus: any[]) => {
     for (const menu of menus) {
       if (menu.type === 2) {

@@ -81,7 +81,7 @@ const store = createStore<stateType>({
       if (userMenus) {
         commit('changeUserMenus', userMenus)
         const routes = setRouter(userMenus)
-        console.log(routes,'routessss')
+        // 加路由
         routes.forEach((route) => {
           router.addRoute('main', route)
         })
